@@ -1,6 +1,6 @@
-import "./user"
+package models
 
-type Resquest struct {
-	Action    string `json:"action"`
-	User 
+type Request struct {
+	Action string `json:"action"`
+	User   User   `json:"user"`
 }
