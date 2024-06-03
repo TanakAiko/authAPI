@@ -5,6 +5,6 @@ import (
 	"net/http"
 )
 
-func loginHandler(w http.ResponseWriter, req md.Request) {
+func loginHandler(w http.ResponseWriter, req md.User) {
 
 }
