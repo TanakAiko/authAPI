@@ -8,7 +8,7 @@ import (
 // The InitDB function initializes a connection to a SQLite database and creates a table if it doesn't
 // exist.
 func InitDB() (*sql.DB, error) {
-	connDB, err := sql.Open("sqlite3", "./database/auth.db")
+	connDB, err := sql.Open("sqlite3", "./databases/auth.db")
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +24,7 @@ func InitDB() (*sql.DB, error) {
 // The function `createTable` reads a SQL file and executes its content to create a table in the
 // database.
 func createTable(db *sql.DB) error {
-	content, err := os.ReadFile("./database/sqlRequests/createTable.sql")
+	content, err := os.ReadFile("./databases/sqlRequests/createTable.sql")
 	if err != nil {
 		return err
 	}

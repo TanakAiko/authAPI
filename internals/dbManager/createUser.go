@@ -18,7 +18,7 @@ func CreateUser(user md.User, db *sql.DB) error {
 	}
 	defer tx.Rollback()
 
-	content, err := os.ReadFile("./database/sqlRequests/insertNewUser.sql")
+	content, err := os.ReadFile("./databases/sqlRequests/insertNewUser.sql")
 	if err != nil {
 		return err
 	}
