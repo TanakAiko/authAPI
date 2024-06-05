@@ -9,6 +9,7 @@ import some package:
 - [UUID](https://github.com/gofrs/uuid) : `go get github.com/google/uuid`
 
 ## Note
+- ### register
 The stucture for the body of the request (Register) is the following :
 ```
 {
@@ -25,6 +26,7 @@ The stucture for the body of the request (Register) is the following :
 }
 ```
 
+- ### login
 The stucture for the body of the request (Login) is the following :
 ```
 {
@@ -39,6 +41,7 @@ The stucture for the body of the request (Login) is the following :
 ## ToDo list
 - Have to handle the not allowed methode
 - test a register with the same email and nickname
+- Hanve to make a script for the download of the dependencies
 - 
 
 
@@ -56,6 +59,18 @@ curl -X POST http://localhost:8080/ -d '{
       "firstName": "John",
       "lastName": "Doe",
       "email": "john.doe@example.com",
+      "password": "hashedPassword"
+    }
+}' -H "Content-Type: application/json"
+```
+
+- ### login
+```
+curl -X POST http://localhost:8080/ -d '{
+  "action":"login", 
+  "body": 
+    { 
+      "identifier": "john.doe@example.com",
       "password": "hashedPassword"
     }
 }' -H "Content-Type: application/json"
