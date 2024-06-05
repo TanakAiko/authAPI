@@ -26,7 +26,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	case "register":
 		registerHandler(w, req.User, db)
 	case "login":
-		loginHandler(w, req.User)
+		loginHandler(w, req.User, db)
 	case "profile":
 		authMiddleware(profileHandler)(w, r)
 	default:
