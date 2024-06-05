@@ -8,9 +8,11 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password CHAR(60) NOT NULL,
     createdAt DATETIME NOT NULL
-) CREATE TABLE IF NOT EXISTS sessions (
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
     sessionID TEXT PRIMARY KEY,
     userID INTEGER NOT NULL,
     expiresAT TIMESTAMP NOT NULL,
-    FOREIGN KEY (userID) REFERENCES users(id),
-)
+    FOREIGN KEY (userID) REFERENCES users(id)
+);

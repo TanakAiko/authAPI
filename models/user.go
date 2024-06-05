@@ -10,18 +10,19 @@ import (
 )
 
 type User struct {
-	Id        int
-	Nickname  string `json:"nickname"`
-	Age       int    `json:"age"`
-	Gender    string `json:"gender"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	CreateAt  time.Time
+	Id         int
+	Nickname   string `json:"nickname"`
+	Age        int    `json:"age"`
+	Gender     string `json:"gender"`
+	FirstName  string `json:"firstName"`
+	LastName   string `json:"lastName"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	Identifier string `json:"identifier"`
+	CreateAt   time.Time
 }
 
-func (user User) CreateUser(db *sql.DB) error {
+func (user *User) CreateUser(db *sql.DB) error {
 	// This code snippet is starting a new transaction ,`tx`, on the database connection `db`.
 	tx, err := db.Begin()
 	if err != nil {
@@ -72,13 +73,13 @@ func (user User) CreateUser(db *sql.DB) error {
 	return err
 }
 
-func (user User) GetUser(db *sql.DB) (string, error) {
+func (user *User) GetUser(db *sql.DB) (string, error) {
 	var hashedPassword string
-	err := db.QueryRow("SELECT id, password FROM users WHERE nickname = ?", user.Nickname).Scan(&user.Id, &hashedPassword)
+	err := db.QueryRow("SELECT id, password FROM users WHERE nickname = ?", user.Identifier).Scan(&user.Id, &hashedPassword)
 	if err != nil {
 
 		if err == sql.ErrNoRows {
-			err2 := db.QueryRow("SELECT id, password FROM users WHERE email = ?", user.Email).Scan(&user.Id, &hashedPassword)
+			err2 := db.QueryRow("SELECT id, password FROM users WHERE email = ?", user.Identifier).Scan(&user.Id, &hashedPassword)
 			if err2 != nil {
 				return "", err2
 			}

@@ -21,7 +21,7 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&req)
 
 	fmt.Println(req)
-
+	
 	switch req.Action {
 	case "register":
 		registerHandler(w, req.User, db)

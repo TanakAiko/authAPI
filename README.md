@@ -9,19 +9,29 @@ import some package:
 - [UUID](https://github.com/gofrs/uuid) : `go get github.com/google/uuid`
 
 ## Note
-The stucture for the body of the request is the following :
+The stucture for the body of the request (Register) is the following :
 ```
 {
-    action: string
-    user: {
-        Id        int
-	    Nickname  string
-	    Age       int   
-	    Gender    string
-	    FirstName string
-	    LastName  string
-	    Email     string
-	    Password  string
+    action: "register"
+    body: {
+	    nickname  string
+	    age       int   
+	    gender    string
+	    firstName string
+	    lastName  string
+	    email     string
+	    password  string
+    }
+}
+```
+
+The stucture for the body of the request (Login) is the following :
+```
+{
+    action: "login"
+    body: {
+	    identifier  string
+	    password    string
     }
 }
 ```
@@ -38,15 +48,15 @@ The stucture for the body of the request is the following :
 ```
 curl -X POST http://localhost:8080/ -d '{
   "action":"register", 
-  "user": 
+  "body": 
     { 
-      "Nickname": "exampleNickname",
-      "Age": 30,
-      "Gender": "male",
-      "FirstName": "John",
-      "LastName": "Doe",
-      "Email": "john.doe@example.com",
-      "Password": "hashedPassword"
+      "nickname": "exampleNickname",
+      "age": 30,
+      "gender": "male",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "password": "hashedPassword"
     }
 }' -H "Content-Type: application/json"
 ```

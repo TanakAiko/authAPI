@@ -1,2 +1,2 @@
-INSERT INTO sessions (sessionID, userID, expiresAT,)
+INSERT INTO sessions (sessionID, userID, expiresAT)
 VALUES (?, ?, ?)

@@ -15,8 +15,9 @@ type Session struct {
 	Expiration time.Time
 }
 
-func (session Session) CreateSession(user User, db *sql.DB) error {
+func (session *Session) CreateSession(user User, db *sql.DB) error {
 	session.Id = uuid.New().String()
+
 	session.Expiration = time.Now().Add(24 * time.Hour)
 
 	// This code snippet is starting a new transaction ,`tx`, on the database connection `db`.
@@ -43,7 +44,7 @@ func (session Session) CreateSession(user User, db *sql.DB) error {
 	_, err = stmt.Exec(
 		session.Id,
 		user.Id,
-		session.Expiration,
+		session.Expiration.Format(time.RFC3339),
 	)
 	if err != nil {
 		log.Println(err)
