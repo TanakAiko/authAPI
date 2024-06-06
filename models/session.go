@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -57,4 +58,25 @@ func (session *Session) CreateSession(user User, db *sql.DB) error {
 	}
 
 	return nil
+}
+
+func (session *Session) TestSessionUser(db *sql.DB) error {
+	err := db.QueryRow("SELECT userID, expiresAT FROM sessions WHERE sessionID = ?", session.Id).Scan(&session.UserID, &session.Expiration)
+	if err != nil {
+		return err
+	}
+
+	if time.Now().After(session.Expiration) {
+		session.deleteSession(db)
+		return fmt.Errorf("session expired")
+	}
+
+	return nil
+}
+
+func (session *Session) deleteSession(db *sql.DB) {
+	_, err := db.Exec("DELETE FROM sessions WHERE sessionID = ?", session.Id)
+	if err != nil {
+		log.Printf("Error deleting session: %v", err)
+	}
 }

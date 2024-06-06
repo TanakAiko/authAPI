@@ -9,8 +9,8 @@ import some package:
 - [UUID](https://github.com/gofrs/uuid) : `go get github.com/google/uuid`
 
 ## Note
+The stucture of the body of the request is the following :
 - ### register
-The stucture for the body of the request (Register) is the following :
 ```
 {
     action: "register"
@@ -27,7 +27,6 @@ The stucture for the body of the request (Register) is the following :
 ```
 
 - ### login
-The stucture for the body of the request (Login) is the following :
 ```
 {
     action: "login"
@@ -37,6 +36,17 @@ The stucture for the body of the request (Login) is the following :
     }
 }
 ```
+
+- ### authorized
+```
+{
+    action: "authorized"
+    body: {
+	    sessionID  string
+    }
+}
+```
+
 
 ## ToDo list
 - Have to handle the not allowed methode

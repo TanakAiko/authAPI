@@ -20,15 +20,15 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	var req md.Request
 	json.NewDecoder(r.Body).Decode(&req)
 
-	fmt.Println(req)
-	
+	fmt.Println("req.Action : ", req.Action)
+
 	switch req.Action {
 	case "register":
-		registerHandler(w, req.User, db)
+		registerHandler(w, req.Body, db)
 	case "login":
-		loginHandler(w, req.User, db)
-	case "profile":
-		authMiddleware(profileHandler)(w, r)
+		loginHandler(w, req.Body, db)
+	case "authorized":
+		authorized(w, req.Body, db)
 	default:
 		http.Error(w, "Unknown action", http.StatusBadRequest)
 	}

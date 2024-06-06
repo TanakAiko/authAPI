@@ -19,6 +19,7 @@ type User struct {
 	Email      string `json:"email"`
 	Password   string `json:"password"`
 	Identifier string `json:"identifier"`
+	SessionID  string `json:"sessionID"`
 	CreateAt   time.Time
 }
 
@@ -75,11 +76,31 @@ func (user *User) CreateUser(db *sql.DB) error {
 
 func (user *User) GetUser(db *sql.DB) (string, error) {
 	var hashedPassword string
-	err := db.QueryRow("SELECT id, password FROM users WHERE nickname = ?", user.Identifier).Scan(&user.Id, &hashedPassword)
+	err := db.QueryRow("SELECT id, nickname, age, gender, firstName, lastName, email, password, createdAt FROM users WHERE nickname = ?", user.Identifier).Scan(
+		&user.Id,
+		&user.Nickname,
+		&user.Age,
+		&user.Gender,
+		&user.FirstName,
+		&user.LastName,
+		&user.Email,
+		&hashedPassword,
+		&user.CreateAt,
+	)
 	if err != nil {
 
 		if err == sql.ErrNoRows {
-			err2 := db.QueryRow("SELECT id, password FROM users WHERE email = ?", user.Identifier).Scan(&user.Id, &hashedPassword)
+			err2 := db.QueryRow("SELECT id, nickname, age, gender, firstName, lastName, email, password, createdAt FROM users WHERE email = ?", user.Identifier).Scan(
+				&user.Id,
+				&user.Nickname,
+				&user.Age,
+				&user.Gender,
+				&user.FirstName,
+				&user.LastName,
+				&user.Email,
+				&hashedPassword,
+				&user.CreateAt,
+			)
 			if err2 != nil {
 				return "", err2
 			}
