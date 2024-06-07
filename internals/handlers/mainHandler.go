@@ -10,10 +10,16 @@ import (
 )
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	db, err := dbManager.InitDB()
 	if err != nil {
 		log.Println("db not opening !", err)
 		http.Error(w, "database can't be opened", http.StatusInternalServerError)
+		return
 	}
 	defer db.Close()
 
@@ -31,5 +37,6 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		authorized(w, req.Body, db)
 	default:
 		http.Error(w, "Unknown action", http.StatusBadRequest)
+		return
 	}
 }

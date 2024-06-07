@@ -49,8 +49,8 @@ The stucture of the body of the request is the following :
 
 
 ## ToDo list
-- Have to handle the not allowed methode
-- test a register with the same email and nickname
+- Have to handle the not allowed methode ✅
+- test a register with the same email and nickname ✅
 - Hanve to make a script for the download of the dependencies
 - 
 

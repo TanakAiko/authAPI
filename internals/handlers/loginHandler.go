@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"auth/internals/tools"
 	md "auth/models"
 	"database/sql"
-	"encoding/json"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -28,6 +28,8 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 		return
 	}
 
+	user.SessionID = session.Id
+	user.Password = ""
 	http.SetCookie(w, &http.Cookie{
 		Name:    "sessionID",
 		Value:   session.Id,
@@ -35,17 +37,7 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 		Expires: session.Expiration,
 	})
 
-	w.WriteHeader(http.StatusOK)
-	data, err := json.Marshal(user)
-	if err != nil {
-		http.Error(w, "Error : Marshal data to send", http.StatusInternalServerError)
-		return
-	}
-	_, err = w.Write(data)
-	if err != nil {
-		http.Error(w, "Error : Writing the data to the response", http.StatusInternalServerError)
-		return
-	}
+	tools.WriteResponse(w, "", http.StatusOK)
 }
 
 func checkPasswordHash(password, hash string) bool {

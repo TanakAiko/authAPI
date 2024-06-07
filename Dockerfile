@@ -11,10 +11,10 @@ COPY . .
 RUN go mod tidy
 
 # Build the application, producing an executable named 'main'
-RUN go build -o main.
-
-# Inform Docker that the container listens on the specified network ports at runtime. Here we expose port 8080.
-EXPOSE 8080
+RUN go build -o main . && chmod +x main
 
 # Define the command to run the application when the container starts
 CMD ["./main"]
+
+# Inform Docker that the container listens on the specified network ports at runtime. Here we expose port 8080.
+EXPOSE 8080
