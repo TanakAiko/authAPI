@@ -37,7 +37,7 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 		Expires: session.Expiration,
 	})
 
-	tools.WriteResponse(w, "", http.StatusOK)
+	tools.WriteResponse(w, user, http.StatusOK)
 }
 
 func checkPasswordHash(password, hash string) bool {

@@ -49,15 +49,17 @@ The stucture of the body of the request is the following :
 
 
 ## ToDo list
-- Have to handle the not allowed methode ✅
+- Have to handle the not allowed methode ❌
 - test a register with the same email and nickname ✅
-- Hanve to make a script for the download of the dependencies
+- Hanve to make a script for the download of the dependencies ❌ (maybe the docker compose will handle it)
 - 
 
 
 
 ## Testing
-- ### register
+### register
+- #### request
+Execute the following command :
 ```
 curl -X POST http://localhost:8080/ -d '{
   "action":"register", 
@@ -73,8 +75,16 @@ curl -X POST http://localhost:8080/ -d '{
     }
 }' -H "Content-Type: application/json"
 ```
+- #### response
+If the resquet is well executed, the response should be :
+```
+- status  : http.StatusCreated (201)
+- body    : "New user created"
+```
 
-- ### login
+### login
+- #### request
+Execute the following command :
 ```
 curl -X POST http://localhost:8080/ -d '{
   "action":"login", 
@@ -85,3 +95,29 @@ curl -X POST http://localhost:8080/ -d '{
     }
 }' -H "Content-Type: application/json"
 ```
+- #### response
+If the resquet is well executed, the response should be :
+```
+- status  : http.StatusOK (200)
+- body    : the user data
+```
+
+### authorized
+- #### request
+Execute the following command :
+```
+curl -X POST http://localhost:8080/ -d '{
+  "action":"authorized", 
+  "body": 
+    { 
+      "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
+    }
+}' -H "Content-Type: application/json"
+```
+- #### response
+If the resquet is well executed, the response should be :
+```
+- status  : http.StatusAccepted (202)
+- body    : "The session is valid"
+```
+

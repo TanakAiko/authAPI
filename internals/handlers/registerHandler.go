@@ -13,5 +13,5 @@ func registerHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 		http.Error(w, "User already exists", http.StatusConflict)
 		return
 	}
-	tools.WriteResponse(w, "", http.StatusCreated)
+	tools.WriteResponse(w, "New user created", http.StatusCreated)
 }

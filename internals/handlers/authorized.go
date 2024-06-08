@@ -14,5 +14,5 @@ func authorized(w http.ResponseWriter, user md.User, db *sql.DB) {
 		http.Error(w, "Forbidden : "+err.Error(), http.StatusForbidden)
 	}
 
-	tools.WriteResponse(w, "", http.StatusAccepted)
+	tools.WriteResponse(w, "The session is valid", http.StatusAccepted)
 }
