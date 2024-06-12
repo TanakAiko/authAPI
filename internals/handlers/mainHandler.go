@@ -33,6 +33,8 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		registerHandler(w, req.Body, db)
 	case "login":
 		loginHandler(w, req.Body, db)
+	case "logout":
+		logoutHandler(w, req.Body, db)
 	case "authorized":
 		authorized(w, req.Body, db)
 	default:

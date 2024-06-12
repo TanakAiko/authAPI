@@ -47,6 +47,16 @@ The stucture of the body of the request is the following :
 }
 ```
 
+- ### logout
+```
+{
+    action: "logout"
+    body: {
+	    sessionID  string
+    }
+}
+```
+
 
 ## ToDo list
 - Have to handle the not allowed methode ❌
@@ -121,3 +131,21 @@ If the resquet is well executed, the response should be :
 - body    : "The session is valid"
 ```
 
+### logout
+- #### request
+Execute the following command :
+```
+curl -X POST http://localhost:8080/ -d '{
+  "action":"logout", 
+  "body": 
+    { 
+      "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
+    }
+}' -H "Content-Type: application/json"
+```
+- #### response
+If the resquet is well executed, the response should be :
+```
+- status  : http.StatusOK (200)
+- body    : "The session is deleted"
+```
