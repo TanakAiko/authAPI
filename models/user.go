@@ -10,17 +10,18 @@ import (
 )
 
 type User struct {
-	Id         int
-	Nickname   string `json:"nickname"`
-	Age        int    `json:"age"`
-	Gender     string `json:"gender"`
-	FirstName  string `json:"firstName"`
-	LastName   string `json:"lastName"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-	Identifier string `json:"identifier"`
-	SessionID  string `json:"sessionID"`
-	CreateAt   time.Time
+	Id                int       `json:"userId"`
+	Nickname          string    `json:"nickname"`
+	Age               int       `json:"age"`
+	Gender            string    `json:"gender"`
+	FirstName         string    `json:"firstName"`
+	LastName          string    `json:"lastName"`
+	Email             string    `json:"email"`
+	Password          string    `json:"password"`
+	Identifier        string    `json:"identifier"`
+	SessionID         string    `json:"sessionID"`
+	SessionExpireTime time.Time `json:"sessionExpireTime"`
+	CreateAt          time.Time `json:"createAt"`
 }
 
 func (user *User) CreateUser(db *sql.DB) error {

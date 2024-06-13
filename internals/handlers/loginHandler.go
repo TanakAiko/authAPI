@@ -36,7 +36,7 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 		Path:    "/",
 		Expires: session.Expiration,
 	})
-
+	user.SessionExpireTime = session.Expiration
 	tools.WriteResponse(w, user, http.StatusOK)
 }
 

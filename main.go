@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
+	port := "8081"
 	http.HandleFunc("/", hd.MainHandler)
-	log.Println("Server (authAPI) started at http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	log.Printf("Server (authAPI) started at http://localhost:%v\n", port)
+	http.ListenAndServe(":"+port, nil)
 }
