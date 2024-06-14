@@ -12,29 +12,30 @@ import (
 func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 	hashedPassword, err := user.GetUser(db)
 	if err != nil {
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		http.Error(w, "Error: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	if !checkPasswordHash(user.Password, hashedPassword) {
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		http.Error(w, "Error: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	var session md.Session
 	err = session.CreateSession(user, db)
 	if err != nil {
-		http.Error(w, "Error creating session", http.StatusInternalServerError)
+		http.Error(w, "Error: "+err.Error(), http.StatusConflict)
 		return
 	}
 
 	user.SessionID = session.Id
 	user.Password = ""
 	http.SetCookie(w, &http.Cookie{
-		Name:    "sessionID",
-		Value:   session.Id,
-		Path:    "/",
-		Expires: session.Expiration,
+		Name:     "sessionID",
+		Value:    session.Id,
+		Path:     "/",
+		Expires:  session.Expiration,
+		HttpOnly: true,
 	})
 	user.SessionExpireTime = session.Expiration
 	tools.WriteResponse(w, user, http.StatusOK)

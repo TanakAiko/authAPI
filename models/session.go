@@ -67,16 +67,16 @@ func (session *Session) TestSessionUser(db *sql.DB) error {
 	}
 
 	if time.Now().After(session.Expiration) {
-		session.DeleteSession(db)
+		if err = session.DeleteSession(db); err != nil {
+			return err
+		}
 		return fmt.Errorf("session expired")
 	}
 
 	return nil
 }
 
-func (session *Session) DeleteSession(db *sql.DB) {
+func (session *Session) DeleteSession(db *sql.DB) error {
 	_, err := db.Exec("DELETE FROM sessions WHERE sessionID = ?", session.Id)
-	if err != nil {
-		log.Printf("Error deleting session: %v", err)
-	}
+	return err
 }
