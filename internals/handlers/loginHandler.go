@@ -17,7 +17,7 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 	}
 
 	if !checkPasswordHash(user.Password, hashedPassword) {
-		http.Error(w, "Error: "+err.Error(), http.StatusUnauthorized)
+		http.Error(w, "Error", http.StatusUnauthorized)
 		return
 	}
 
