@@ -61,6 +61,9 @@ The stucture of the body of the request is the following :
 ```
 {
     action: "getUserData"
+    body: {
+	    sessionID  string
+    }
 }
 ```
 
@@ -162,7 +165,11 @@ If the resquet is well executed, the response should be :
 Execute the following command :
 ```
 curl -X POST http://localhost:8080/ -d '{
-  "action":"getUserData"
+  "action":"getUserData", 
+  "body": 
+    { 
+      "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
+    }
 }' -H "Content-Type: application/json"
 ```
 - #### response
