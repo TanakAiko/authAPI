@@ -42,8 +42,7 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 }
 
 func getUserData(w http.ResponseWriter, user md.User, db *sql.DB) {
-	_, err := user.GetUser(db)
-	if err != nil {
+	if err := user.GetUserFromSession(db); err != nil {
 		http.Error(w, "Error: "+err.Error(), http.StatusUnauthorized)
 		return
 	}

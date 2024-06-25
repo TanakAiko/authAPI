@@ -113,6 +113,27 @@ func (user *User) GetUser(db *sql.DB) (string, error) {
 	return hashedPassword, nil
 }
 
+func (user *User) GetUserFromSession(db *sql.DB) error {
+	err := db.QueryRow("SELECT userID FROM sessions WHERE sessionID = ?", user.SessionID).Scan(
+		&user.Id,
+	)
+	if err != nil {
+		return err
+	}
+
+	err = db.QueryRow("SELECT nickname, age, gender, firstName, lastName, email, createdAt FROM users WHERE id = ?", user.Id).Scan(
+		&user.Nickname,
+		&user.Age,
+		&user.Gender,
+		&user.FirstName,
+		&user.LastName,
+		&user.Email,
+		&user.CreateAt,
+	)
+
+	return err
+}
+
 func hashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
