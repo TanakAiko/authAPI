@@ -57,6 +57,13 @@ The stucture of the body of the request is the following :
 }
 ```
 
+- ### getUserData
+```
+{
+    action: "getUserData"
+}
+```
+
 
 ## ToDo list
 - Have to handle the not allowed methode ❌
@@ -148,4 +155,19 @@ If the resquet is well executed, the response should be :
 ```
 - status  : http.StatusOK (200)
 - body    : "The session is deleted"
+```
+
+### getUserData
+- #### request
+Execute the following command :
+```
+curl -X POST http://localhost:8080/ -d '{
+  "action":"getUserData"
+}' -H "Content-Type: application/json"
+```
+- #### response
+If the resquet is well executed, the response should be :
+```
+- status  : http.StatusOK (200)
+- body    : The user's data
 ```

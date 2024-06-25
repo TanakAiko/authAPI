@@ -41,6 +41,15 @@ func loginHandler(w http.ResponseWriter, user md.User, db *sql.DB) {
 	tools.WriteResponse(w, user, http.StatusOK)
 }
 
+func getUserData(w http.ResponseWriter, user md.User, db *sql.DB) {
+	_, err := user.GetUser(db)
+	if err != nil {
+		http.Error(w, "Error: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
+	tools.WriteResponse(w, user, http.StatusOK)
+}
+
 func checkPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil

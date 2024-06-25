@@ -37,6 +37,9 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		logoutHandler(w, req.Body, db)
 	case "authorized":
 		authorized(w, req.Body, db)
+	case "getUserData":
+		getUserData(w, req.Body, db)
+
 	default:
 		http.Error(w, "Unknown action", http.StatusBadRequest)
 		return
