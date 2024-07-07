@@ -1,20 +1,26 @@
-# Use the official Golang Alpine image as the base
-FROM golang:1.21.1-alpine
+# Utiliser une image de base légère pour Go
+FROM golang:1.20-alpine
 
-# Set the working directory inside the container
+# Définir le répertoire de travail à l'intérieur du container
 WORKDIR /app
 
-# Copy all files from the current directory (where the Dockerfile is located) into the container at /app
+# Installer GCC et autres dépendances nécessaires
+RUN apk add --no-cache gcc musl-dev
+
+# Copier le code source dans le répertoire de travail
 COPY . .
 
-# Download dependencies using 'go mod tidy'
-RUN go mod tidy
+# Supposez que le service authAPI utilise des données stockées dans /app/databases
+VOLUME /app/databases
 
-# Build the application, producing an executable named 'main'
-RUN go build -o main . && chmod +x main
+# Set CGO_ENABLED=1
+ENV CGO_ENABLED=1
 
-# Define the command to run the application when the container starts
-CMD ["./main"]
+# Construire l'application
+RUN go build -o authapi-server
 
-# Inform Docker that the container listens on the specified network ports at runtime. Here we expose port 8080.
-EXPOSE 8080
+# Exposer le port
+EXPOSE 8081
+
+# Commande pour lancer le serveur
+CMD ["./authapi-server"]
