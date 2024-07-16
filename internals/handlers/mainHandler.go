@@ -39,6 +39,8 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 		authorized(w, req.Body, db)
 	case "getUserData":
 		getUserData(w, req.Body, db)
+	case "getAllUser":
+		getAllUser(w, db)
 
 	default:
 		http.Error(w, "Unknown action", http.StatusBadRequest)

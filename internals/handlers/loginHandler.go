@@ -53,3 +53,30 @@ func checkPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
+
+func getAllUser(w http.ResponseWriter, db *sql.DB) {
+	rows, err := db.Query("SELECT id, nickname, age, gender, firstName, lastName, email, createdAt FROM users")
+	if err != nil {
+		http.Error(w, "Error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var users []md.User
+	for rows.Next() {
+		var user md.User
+		err := rows.Scan(&user.Id, &user.Nickname, &user.Age, &user.Gender, &user.FirstName, &user.LastName, &user.Email, &user.CreateAt)
+		if err != nil {
+			http.Error(w, "Error: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		users = append(users, user)
+	}
+
+	if err := rows.Err(); err != nil {
+		http.Error(w, "Error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	tools.WriteResponse(w, users, http.StatusOK)
+}
