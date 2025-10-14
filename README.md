@@ -1,180 +1,447 @@
-# authAPI
-An API for the authentification of a user (client)
+# 🔐 AuthAPI
 
-## Before starting
-import some package: 
-- [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt) : `go get golang.org/x/crypto/bcrypt`
-- [sqlite3](github.com/mattn/go-sqlite3) : `go get github.com/mattn/go-sqlite3`
-- [gorilla websocket](https://pkg.go.dev/github.com/gorilla/websocket) : `go get github.com/gorilla/websocket`
-- [UUID](https://github.com/gofrs/uuid) : `go get github.com/google/uuid`
+<div align="center">
 
-## Note
-The stucture of the body of the request is the following :
-- ### register
-```
+A lightweight, secure authentication API built with Go that provides user registration, login, session management, and user data retrieval capabilities.
+
+![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![bcrypt](https://img.shields.io/badge/Security-bcrypt-green?style=for-the-badge)
+![UUID](https://img.shields.io/badge/Sessions-UUID-orange?style=for-the-badge)
+
+</div>
+
+## 📋 Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+- [Project Structure](#project-structure)
+- [Development](#development)
+- [Testing](#testing)
+- [Roadmap](#roadmap)
+- [License](#license)
+
+## ✨ Features
+
+- **User Registration**: Secure user account creation with password hashing (bcrypt)
+- **User Authentication**: Login with email/nickname and password
+- **Session Management**: UUID-based sessions with 24-hour expiration
+- **Authorization Validation**: Verify active sessions
+- **User Data Retrieval**: Get authenticated user information
+- **Secure Logout**: Session termination and cleanup
+- **SQLite Database**: Lightweight, embedded database storage
+- **Docker Support**: Containerized deployment ready
+
+## 🔧 Prerequisites
+
+- Go 1.20 or higher
+- SQLite3
+- Docker (optional, for containerized deployment)
+
+## 📦 Installation
+
+### Option 1: Local Development
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd authAPI
+   ```
+
+2. **Install dependencies**
+   ```bash
+   go mod download
+   ```
+
+   Or install packages individually:
+   ```bash
+   go get golang.org/x/crypto/bcrypt
+   go get github.com/mattn/go-sqlite3
+   go get github.com/google/uuid
+   ```
+
+3. **Initialize the database**
+   ```bash
+   chmod +x script/init.sh
+   ./script/init.sh
+   ```
+
+### Option 2: Docker
+
+1. **Build the Docker image**
+   ```bash
+   docker build -t authapi .
+   ```
+
+2. **Run the container**
+   ```bash
+   docker run -p 8081:8081 -v $(pwd)/databases:/app/databases authapi
+   ```
+
+## 🚀 Quick Start
+
+1. **Start the server**
+   ```bash
+   go run main.go
+   ```
+
+2. **Server will be available at**
+   ```
+   http://localhost:8081
+   ```
+
+3. **Test the API**
+   ```bash
+   # Register a new user
+   curl -X POST http://localhost:8081/ \
+     -H "Content-Type: application/json" \
+     -d '{
+       "action": "register",
+       "body": {
+         "nickname": "johndoe",
+         "age": 30,
+         "gender": "male",
+         "firstName": "John",
+         "lastName": "Doe",
+         "email": "john.doe@example.com",
+         "password": "securePassword123"
+       }
+     }'
+   ```
+
+## 📚 API Reference
+
+All requests are sent as POST to the root endpoint (`/`) with a JSON body containing an `action` field and a `body` field.
+
+### 1. Register
+
+Create a new user account.
+
+**Request:**
+```json
 {
-    action: "register"
-    body: {
-	    nickname  string
-	    age       int   
-	    gender    string
-	    firstName string
-	    lastName  string
-	    email     string
-	    password  string
-    }
+  "action": "register",
+  "body": {
+    "nickname": "string",
+    "age": "int",
+    "gender": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "email": "string",
+    "password": "string"
+  }
 }
 ```
 
-- ### login
-```
-{
-    action: "login"
-    body: {
-	    identifier  string
-	    password    string
-    }
-}
-```
+**Response:**
+- **Status**: `201 Created`
+- **Body**: `"New user created"`
 
-- ### authorized
-```
-{
-    action: "authorized"
-    body: {
-	    sessionID  string
-    }
-}
-```
-
-- ### logout
-```
-{
-    action: "logout"
-    body: {
-	    sessionID  string
-    }
-}
-```
-
-- ### getUserData
-```
-{
-    action: "getUserData"
-    body: {
-	    sessionID  string
-    }
-}
-```
-
-
-## ToDo list
-- Have to handle the not allowed methode ❌
-- test a register with the same email and nickname ✅
-- Hanve to make a script for the download of the dependencies ❌ (maybe the docker compose will handle it)
-- 
-
-
-
-## Testing
-### register
-- #### request
-Execute the following command :
-```
-curl -X POST http://localhost:8080/ -d '{
-  "action":"register", 
-  "body": 
-    { 
+**Example:**
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "register",
+    "body": {
       "nickname": "exampleNickname",
       "age": 30,
       "gender": "male",
       "firstName": "John",
       "lastName": "Doe",
       "email": "john.doe@example.com",
-      "password": "hashedPassword"
+      "password": "securePassword123"
     }
-}' -H "Content-Type: application/json"
-```
-- #### response
-If the resquet is well executed, the response should be :
-```
-- status  : http.StatusCreated (201)
-- body    : "New user created"
+  }'
 ```
 
-### login
-- #### request
-Execute the following command :
+---
+
+### 2. Login
+
+Authenticate a user and receive session information.
+
+**Request:**
+```json
+{
+  "action": "login",
+  "body": {
+    "identifier": "string (email or nickname)",
+    "password": "string"
+  }
+}
 ```
-curl -X POST http://localhost:8080/ -d '{
-  "action":"login", 
-  "body": 
-    { 
+
+**Response:**
+- **Status**: `200 OK`
+- **Body**: User data object with session information
+
+**Example:**
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "login",
+    "body": {
       "identifier": "john.doe@example.com",
-      "password": "hashedPassword"
+      "password": "securePassword123"
     }
-}' -H "Content-Type: application/json"
-```
-- #### response
-If the resquet is well executed, the response should be :
-```
-- status  : http.StatusOK (200)
-- body    : the user data
+  }'
 ```
 
-### authorized
-- #### request
-Execute the following command :
-```
-curl -X POST http://localhost:8080/ -d '{
-  "action":"authorized", 
-  "body": 
-    { 
-      "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
-    }
-}' -H "Content-Type: application/json"
-```
-- #### response
-If the resquet is well executed, the response should be :
-```
-- status  : http.StatusAccepted (202)
-- body    : "The session is valid"
+---
+
+### 3. Authorized
+
+Verify if a session is valid.
+
+**Request:**
+```json
+{
+  "action": "authorized",
+  "body": {
+    "sessionID": "string (UUID)"
+  }
+}
 ```
 
-### logout
-- #### request
-Execute the following command :
-```
-curl -X POST http://localhost:8080/ -d '{
-  "action":"logout", 
-  "body": 
-    { 
+**Response:**
+- **Status**: `202 Accepted`
+- **Body**: `"The session is valid"`
+
+**Example:**
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "authorized",
+    "body": {
       "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
     }
-}' -H "Content-Type: application/json"
-```
-- #### response
-If the resquet is well executed, the response should be :
-```
-- status  : http.StatusOK (200)
-- body    : "The session is deleted"
+  }'
 ```
 
-### getUserData
-- #### request
-Execute the following command :
+---
+
+### 4. Logout
+
+Terminate a user session.
+
+**Request:**
+```json
+{
+  "action": "logout",
+  "body": {
+    "sessionID": "string (UUID)"
+  }
+}
 ```
-curl -X POST http://localhost:8080/ -d '{
-  "action":"getUserData", 
-  "body": 
-    { 
+
+**Response:**
+- **Status**: `200 OK`
+- **Body**: `"The session is deleted"`
+
+**Example:**
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "logout",
+    "body": {
       "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
     }
-}' -H "Content-Type: application/json"
+  }'
 ```
-- #### response
-If the resquet is well executed, the response should be :
+
+---
+
+### 5. Get User Data
+
+Retrieve authenticated user information.
+
+**Request:**
+```json
+{
+  "action": "getUserData",
+  "body": {
+    "sessionID": "string (UUID)"
+  }
+}
 ```
-- status  : http.StatusOK (200)
-- body    : The user's data
+
+**Response:**
+- **Status**: `200 OK`
+- **Body**: User data object
+
+**Example:**
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "getUserData",
+    "body": {
+      "sessionID": "6a09a3da-26ee-4b35-870c-d7a4f22f939c"
+    }
+  }'
 ```
+
+## 📁 Project Structure
+
+```
+authAPI/
+├── main.go                 # Application entry point
+├── go.mod                  # Go module definition
+├── go.sum                  # Go dependencies checksum
+├── Dockerfile              # Docker configuration
+├── README.md               # This file
+├── databases/              # Database files and SQL scripts
+│   └── sqlRequests/
+│       ├── createTable.sql
+│       ├── insertNewSession.sql
+│       └── insertNewUser.sql
+├── internals/              # Internal application logic
+│   ├── dbManager/          # Database initialization
+│   │   └── initDB.go
+│   ├── handlers/           # HTTP request handlers
+│   │   ├── mainHandler.go
+│   │   ├── registerHandler.go
+│   │   ├── loginHandler.go
+│   │   ├── authorized.go
+│   │   ├── logoutHandler.go
+│   │   └── getUserDataHandler.go
+│   └── tools/              # Utility functions
+│       └── utils.go
+├── models/                 # Data models
+│   ├── user.go
+│   ├── session.go
+│   └── request.go
+└── script/                 # Utility scripts
+    ├── init.sh
+    └── push.sh
+```
+
+## 🛠️ Development
+
+### Dependencies
+
+This project uses the following Go packages:
+
+- **[bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt)**: Password hashing and verification
+- **[go-sqlite3](https://github.com/mattn/go-sqlite3)**: SQLite database driver
+- **[uuid](https://github.com/google/uuid)**: UUID generation for sessions
+
+### Building from Source
+
+```bash
+# Build the binary
+go build -o authapi-server
+
+# Run the binary
+./authapi-server
+```
+
+### Running with Docker
+
+```bash
+# Build and run with Docker
+docker build -t authapi .
+docker run -p 8081:8081 -v $(pwd)/databases:/app/databases authapi
+```
+
+## 🧪 Testing
+
+Complete test suite with example commands:
+
+### 1. Register a New User
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "register",
+    "body": {
+      "nickname": "testuser",
+      "age": 25,
+      "gender": "female",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "password": "testPassword456"
+    }
+  }'
+```
+
+### 2. Login
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "login",
+    "body": {
+      "identifier": "jane.smith@example.com",
+      "password": "testPassword456"
+    }
+  }'
+```
+
+### 3. Check Authorization (Use sessionID from login response)
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "authorized",
+    "body": {
+      "sessionID": "YOUR_SESSION_ID_HERE"
+    }
+  }'
+```
+
+### 4. Get User Data
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "getUserData",
+    "body": {
+      "sessionID": "YOUR_SESSION_ID_HERE"
+    }
+  }'
+```
+
+### 5. Logout
+```bash
+curl -X POST http://localhost:8081/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "logout",
+    "body": {
+      "sessionID": "YOUR_SESSION_ID_HERE"
+    }
+  }'
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+**Note**: This API is designed for educational purposes. For production use, consider additional security measures such as HTTPS, rate limiting, input validation, and comprehensive error handling.
+
+---
+
+<div align="center">
+
+**⭐ Star this repository if you found it helpful! ⭐**
+
+Made with ❤️ from 🇸🇳
+
+</div>
