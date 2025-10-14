@@ -63,11 +63,12 @@ A lightweight, secure authentication API built with Go that provides user regist
    go get github.com/google/uuid
    ```
 
-3. **Initialize the database**
+3. **Run the server**
    ```bash
-   chmod +x script/init.sh
-   ./script/init.sh
+   go run main.go
    ```
+   
+   > **Note**: The database will be automatically created on first run in `./databases/auth.db`
 
 ### Option 2: Docker
 
