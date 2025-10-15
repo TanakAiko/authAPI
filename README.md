@@ -12,18 +12,36 @@ A lightweight, secure authentication API built with Go that provides user regist
 
 </div>
 
-## 📋 Table of Contents
+<details>
+<summary>📋 Table of Contents</summary>
 
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [API Reference](#api-reference)
-- [Project Structure](#project-structure)
-- [Development](#development)
-- [Testing](#testing)
-- [Roadmap](#roadmap)
-- [License](#license)
+- [🔐 AuthAPI](#-authapi)
+  - [✨ Features](#-features)
+  - [🔧 Prerequisites](#-prerequisites)
+  - [📦 Installation](#-installation)
+    - [Option 1: Local Development](#option-1-local-development)
+    - [Option 2: Docker](#option-2-docker)
+  - [🚀 Quick Start](#-quick-start)
+  - [📚 API Reference](#-api-reference)
+    - [1. Register](#1-register)
+    - [2. Login](#2-login)
+    - [3. Authorized](#3-authorized)
+    - [4. Logout](#4-logout)
+    - [5. Get User Data](#5-get-user-data)
+  - [📁 Project Structure](#-project-structure)
+  - [🛠️ Development](#️-development)
+    - [Dependencies](#dependencies)
+    - [Building from Source](#building-from-source)
+    - [Running with Docker](#running-with-docker)
+  - [🧪 Testing](#-testing)
+    - [1. Register a New User](#1-register-a-new-user)
+    - [2. Login](#2-login-1)
+    - [3. Check Authorization (Use sessionID from login response)](#3-check-authorization-use-sessionid-from-login-response)
+    - [4. Get User Data](#4-get-user-data)
+    - [5. Logout](#5-logout)
+  - [🤝 Contributing](#-contributing)
+
+</details>
 
 ## ✨ Features
 
