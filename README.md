@@ -4,7 +4,8 @@
 
 A lightweight, secure authentication API built with Go that provides user registration, login, session management, and user data retrieval capabilities.
 
-![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![bcrypt](https://img.shields.io/badge/Security-bcrypt-green?style=for-the-badge)
 ![UUID](https://img.shields.io/badge/Sessions-UUID-orange?style=for-the-badge)
